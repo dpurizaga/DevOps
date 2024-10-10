@@ -1,0 +1,16 @@
+trigger: none  # El pipeline no se ejecutará automáticamente, podrás ejecutarlo manualmente
+
+pool:
+  vmImage: 'ubuntu-latest'  # Usamos una máquina virtual con Ubuntu, que tiene soporte para kubectl y Azure CLI
+
+steps:
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscriptionEndpoint: 'akseu2c010aksstg02'  # Nombre de tu Service Connection
+    azureResourceGroup: 'RG_EU2_C010_AKS_STG_01'  # Grupo de recursos donde se encuentra tu clúster de AKS
+    kubernetesCluster: 'akseu2c010aksstg02'  # Nombre de tu clúster de AKS
+    command: 'get'
+    arguments: 'pods --all-namespaces'  # Comando kubectl para listar los pods en todos los namespaces
+
+- script: echo "Connection to AKS cluster successful!"
